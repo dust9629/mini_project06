@@ -33,3 +33,34 @@ const isTouchDevice = () => {
 isTouchDevice();
 // console.log(isTouchDevice());
 
+draggableElem.addEventListener(events[deviceType].down, (e) => {
+    e.preventDefault();
+    initialX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
+    initialY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
+    moveElement = true;
+})
+
+draggableElem.addEventListener(events[devieType].move, (e) => {
+    if(moveElement) {
+        e.preventDefault();
+        let newX = !isTouchDevice() ? e.clientX : e.touches[0].clientX;
+        let newY = !isTouchDevice() ? e.clientY : e.touches[0].clientY;
+
+        draggableElem.style.top = draggableElem.offsetTop - (initialY - newY) + "px";
+        draggableElem.style.left = draggableElem.offsetLeft - (initialX - newX) + "px";
+        
+        initialX = newX;
+        initialY = newY;
+    }
+});
+
+draggableElem.addEventListener(events[deviceType].up, 
+    (stopMovement = (e) => {
+        moveElement = false;
+    })
+)
+
+draggableElem.addEventListener("mouseleave", stopMovement);
+draggableElem.addEventListener(events[deviceType].up, (e) => {
+    moveElement = false;
+})
